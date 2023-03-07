@@ -42,11 +42,17 @@ namespace MagicVilla_VillaAPI.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<VillaDTO> CreateVilla([FromBody] VillaDTO villaDTO)
         {
-            /* Does Model State Validation when the Cotroller is not an API Controller */
+            /* Does Model State Validation when the Cotroller is not an API Controller. First the validation is performed and then the API Controller gets hit */
             //if (!ModelState.IsValid)
             //{
             //    return BadRequest(ModelState);
             //}
+
+            if(VillaStore.villaList.FirstOrDefault(u => u.Name.ToLower() == villaDTO.Name.ToLower()) != null)
+            {
+                ModelState.AddModelError("CustomError", "Villa Already Exists");
+                return BadRequest(ModelState);
+            }
 
             if (villaDTO == null)
             {
