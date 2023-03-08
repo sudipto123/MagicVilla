@@ -18,7 +18,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 /* Register Custom Logging inside the Container */
-builder.Services.AddSingleton<ILogging, LoggingV2>();
+//builder.Services.AddSingleton<ILogging, LoggingV2>();
 
 var app = builder.Build();
 
