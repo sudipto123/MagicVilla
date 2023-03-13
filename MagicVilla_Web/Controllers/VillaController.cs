@@ -40,17 +40,24 @@ namespace MagicVilla_Web.Controllers
 				var response = await _villaService.CreateAsync<APIResponse>(model);
 				if (response != null && response.IsSuccess)
 				{
+                    TempData["success"] = "Villa created successfully";
                     return RedirectToAction(nameof(IndexVilla));
 				}
                 else
                 {
                     if (response.ErrorMessages.Count > 0)
                     {
-                        ModelState.AddModelError("ErrorMessages", response.ErrorMessages.FirstOrDefault());
+                        //ModelState.AddModelError("ErrorMessages", response.ErrorMessages.FirstOrDefault());
+
+                        var errorMessages = response.ErrorMessages.ToArray();
+                        string error = errorMessages[0].ToString();
+                        TempData["error"] = error;
+                        return View(model);
                     }
                 }
             }
-			return View(model);
+            TempData["error"] = "Error encountered.";
+            return View(model);
 		}
 
         public async Task<IActionResult> UpdateVilla(int villaId)
@@ -68,15 +75,16 @@ namespace MagicVilla_Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateVilla(VillaUpdateDTO model)
         {
-            if (ModelState.IsValid)
+            if(ModelState.IsValid)
             {
-
+                TempData["success"] = "Villa updated successfully";
                 var response = await _villaService.UpdateAsync<APIResponse>(model);
                 if (response != null && response.IsSuccess)
                 {
                     return RedirectToAction(nameof(IndexVilla));
                 }
             }
+            TempData["error"] = "Error encountered.";
             return View(model);
         }
 
@@ -99,9 +107,10 @@ namespace MagicVilla_Web.Controllers
             var response = await _villaService.DeleteAsync<APIResponse>(model.Id);
             if (response != null && response.IsSuccess)
             {
+                TempData["success"] = "Villa deleted successfully";
                 return RedirectToAction(nameof(IndexVilla));
             }
-
+            TempData["error"] = "Error encountered.";
             return View(model);
         }
     }

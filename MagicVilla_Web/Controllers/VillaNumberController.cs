@@ -58,25 +58,34 @@ namespace MagicVilla_Web.Controllers
                 var response = await _villaNumberService.CreateAsync<APIResponse>(model.VillaNumber);
                 if (response != null && response.IsSuccess)
                 {
+                    TempData["success"] = "Villa Number created successfully";
                     return RedirectToAction(nameof(IndexVillaNumber));
                 }
                 else
                 {
                     if (response.ErrorMessages.Count > 0)
                     {
-                        ModelState.AddModelError("ErrorMessages", response.ErrorMessages.FirstOrDefault());
+                        //ModelState.AddModelError("ErrorMessages", response.ErrorMessages.FirstOrDefault());
+
+                        var resp = await _villaService.GetAllAsync<APIResponse>();
+                        if (resp != null && resp.IsSuccess)
+                        {
+                            model.VillaList = JsonConvert.DeserializeObject<List<VillaDTO>>(Convert.ToString(resp.Result)).Select(i => new SelectListItem
+                            {
+                                Text = i.Name,
+                                Value = i.Id.ToString()
+                            });
+                        }
+
+                        var errorMessages = response.ErrorMessages.ToArray();
+                        string error = errorMessages[0].ToString();
+                        TempData["error"] = error;
+                        return View(model);
                     }
                 }
             }
-            var resp = await _villaService.GetAllAsync<APIResponse>();
-            if (resp != null && resp.IsSuccess)
-            {
-                model.VillaList = JsonConvert.DeserializeObject<List<VillaDTO>>(Convert.ToString(resp.Result)).Select(i => new SelectListItem
-                {
-                    Text = i.Name,
-                    Value = i.Id.ToString()
-                });
-            }
+            
+            TempData["error"] = "Error encountered.";
             return View(model);
         }
 
@@ -109,6 +118,7 @@ namespace MagicVilla_Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                TempData["success"] = "Villa Number updated successfully";
                 var response = await _villaNumberService.UpdateAsync<APIResponse>(model.VillaNumber);
                 if (response != null && response.IsSuccess)
                 {
@@ -118,19 +128,27 @@ namespace MagicVilla_Web.Controllers
                 {
                     if (response.ErrorMessages.Count > 0)
                     {
-                        ModelState.AddModelError("ErrorMessages", response.ErrorMessages.FirstOrDefault());
+                        //ModelState.AddModelError("ErrorMessages", response.ErrorMessages.FirstOrDefault());
+
+                        var resp = await _villaService.GetAllAsync<APIResponse>();
+                        if (resp != null && resp.IsSuccess)
+                        {
+                            model.VillaList = JsonConvert.DeserializeObject<List<VillaDTO>>(Convert.ToString(resp.Result)).Select(i => new SelectListItem
+                            {
+                                Text = i.Name,
+                                Value = i.Id.ToString()
+                            });
+                        }
+
+                        var errorMessages = response.ErrorMessages.ToArray();
+                        string error = errorMessages[0].ToString();
+                        TempData["error"] = error;
+                        return View(model);
                     }
                 }
             }
-            var resp = await _villaService.GetAllAsync<APIResponse>();
-            if (resp != null && resp.IsSuccess)
-            {
-                model.VillaList = JsonConvert.DeserializeObject<List<VillaDTO>>(Convert.ToString(resp.Result)).Select(i => new SelectListItem
-                {
-                    Text = i.Name,
-                    Value = i.Id.ToString()
-                });
-            }
+            
+            TempData["error"] = "Error encountered.";
             return View(model);
         }
 
@@ -165,9 +183,10 @@ namespace MagicVilla_Web.Controllers
             var response = await _villaNumberService.DeleteAsync<APIResponse>(model.VillaNumber.VillaNo);
             if (response != null && response.IsSuccess)
             {
+                TempData["success"] = "Villa Number deleted successfully";
                 return RedirectToAction(nameof(IndexVillaNumber));
             }
-
+            TempData["error"] = "Error encountered.";
             return View(model);
         }
     }
