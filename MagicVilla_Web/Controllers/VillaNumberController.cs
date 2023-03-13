@@ -46,7 +46,7 @@ namespace MagicVilla_Web.Controllers
                     Text = i.Name,
                     Value = i.Id.ToString()
                 });
-            }
+            }            
             return View(villaNumberVM);
         }
         [HttpPost]
@@ -59,6 +59,13 @@ namespace MagicVilla_Web.Controllers
                 if (response != null && response.IsSuccess)
                 {
                     return RedirectToAction(nameof(IndexVillaNumber));
+                }
+                else
+                {
+                    if (response.ErrorMessages.Count > 0)
+                    {
+                        ModelState.AddModelError("ErrorMessages", response.ErrorMessages.FirstOrDefault());
+                    }
                 }
             }
             var resp = await _villaService.GetAllAsync<APIResponse>();
