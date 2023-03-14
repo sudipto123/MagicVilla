@@ -35,8 +35,7 @@ namespace MagicVilla_VillaAPI.Controllers
             _dbVilla = dbVilla;
             _mapper = mapper;
             this._response = new();
-        }
-
+        } 
         [HttpGet]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
