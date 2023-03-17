@@ -1,4 +1,5 @@
-﻿using MagicVilla_Web.Models.Dto;
+﻿using MagicVilla_Web.Models;
+using MagicVilla_Web.Models.Dto;
 using MagicVilla_Web.Services.IServices;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,6 +28,30 @@ namespace MagicVilla_Web.Controllers
 
         [HttpGet]
         public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegistrationRequestDTO obj)
+        {
+            APIResponse result = await _authService.RegisterAsync<APIResponse>(obj);
+
+            if(result != null && result.IsSuccess)
+            {
+                return RedirectToAction("Login");       
+            }
+
+            return View();
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            return View();
+        }
+
+        public IActionResult AccessDenied()
         {
             return View();
         }
