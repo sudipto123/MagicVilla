@@ -37,7 +37,7 @@ namespace MagicVilla_VillaAPI.Controllers
             this._response = new();
         } 
         [HttpGet]
-        //[Authorize]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status200OK)]
