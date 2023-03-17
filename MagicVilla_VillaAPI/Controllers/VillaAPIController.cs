@@ -37,19 +37,26 @@ namespace MagicVilla_VillaAPI.Controllers
             this._response = new();
         } 
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<APIResponse>> GetVillas()
         {
-            //IEnumerable<Villa> villaList = await _db.Villas.ToListAsync();
+            try
+            {
+                //IEnumerable<Villa> villaList = await _db.Villas.ToListAsync();
 
-            IEnumerable<Villa> villaList = await _dbVilla.GetAllAsync();
-            _response.Result = _mapper.Map<List<VillaDTO>>(villaList);
-            _response.StatusCode = HttpStatusCode.OK;
-            //_logger.Log("Getting all the Villas", "");
-            return Ok(_response); 
+                IEnumerable<Villa> villaList = await _dbVilla.GetAllAsync();
+                _response.Result = _mapper.Map<List<VillaDTO>>(villaList);
+                _response.StatusCode = HttpStatusCode.OK;
+                //_logger.Log("Getting all the Villas", "");
+                return Ok(_response);
+            }
+            catch(Exception ex)
+            {
+                throw;
+            }
         }
         [HttpGet("{id:int}", Name = "GetVilla")]
         [Authorize(Roles = "admin")]
