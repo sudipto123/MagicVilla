@@ -11,11 +11,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 
-namespace MagicVilla_VillaAPI.Controllers
+namespace MagicVilla_VillaAPI.Controllers.v1
 {
     //[Route("/api/[controller]")]
-    [Route("/api/villaAPI")]
+    [Route("/api/v{version:apiVersion}/villaAPI")]
     [ApiController]
+    //[ApiVersion("1.0")]
     public class VillaAPIController : ControllerBase
     {
         //private readonly ILogging _logger;
@@ -34,8 +35,8 @@ namespace MagicVilla_VillaAPI.Controllers
         {
             _dbVilla = dbVilla;
             _mapper = mapper;
-            this._response = new();
-        } 
+            _response = new();
+        }
         [HttpGet]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -53,7 +54,7 @@ namespace MagicVilla_VillaAPI.Controllers
                 //_logger.Log("Getting all the Villas", "");
                 return Ok(_response);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw;
             }
@@ -97,7 +98,7 @@ namespace MagicVilla_VillaAPI.Controllers
             }
             return _response;
         }
-        [HttpPost]        
+        [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -123,7 +124,7 @@ namespace MagicVilla_VillaAPI.Controllers
                 {
                     return BadRequest(villaCreateDTO);
                 }
-            
+
                 Villa villa = _mapper.Map<Villa>(villaCreateDTO);
 
                 //await _db.Villas.AddAsync(model);
@@ -133,7 +134,7 @@ namespace MagicVilla_VillaAPI.Controllers
 
                 _response.Result = _mapper.Map<VillaDTO>(villa);
                 _response.StatusCode = HttpStatusCode.Created;
-                return CreatedAtRoute("GetVilla", new { id = villa.Id } , _response);
+                return CreatedAtRoute("GetVilla", new { id = villa.Id }, _response);
             }
             catch (Exception ex)
             {
@@ -153,7 +154,7 @@ namespace MagicVilla_VillaAPI.Controllers
         {
             try
             {
-                if(id == 0)
+                if (id == 0)
                 {
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_response);
@@ -190,7 +191,7 @@ namespace MagicVilla_VillaAPI.Controllers
         {
             try
             {
-                if(villaUpdateDTO == null || id != villaUpdateDTO.Id)
+                if (villaUpdateDTO == null || id != villaUpdateDTO.Id)
                 {
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_response);
@@ -220,7 +221,7 @@ namespace MagicVilla_VillaAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdatePartialVilla(int id, JsonPatchDocument<VillaUpdateDTO> patchDTO)
         {
-            if(patchDTO == null || id == 0)
+            if (patchDTO == null || id == 0)
             {
                 return BadRequest();
             }
@@ -230,7 +231,7 @@ namespace MagicVilla_VillaAPI.Controllers
 
             VillaUpdateDTO villaDTO = _mapper.Map<VillaUpdateDTO>(villa);
 
-            if(villa  == null)
+            if (villa == null)
             {
                 return NotFound();
             }
