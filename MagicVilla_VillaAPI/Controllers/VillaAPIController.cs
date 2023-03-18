@@ -14,8 +14,9 @@ using System.Net;
 namespace MagicVilla_VillaAPI.Controllers
 {
     //[Route("/api/[controller]")]
-    [Route("/api/villaAPI")]
+    [Route("/api/v{version:apiVersion}/villaAPI")]
     [ApiController]
+    //[ApiVersion("1.0")]
     public class VillaAPIController : ControllerBase
     {
         //private readonly ILogging _logger;
