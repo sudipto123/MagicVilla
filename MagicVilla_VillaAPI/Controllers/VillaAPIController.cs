@@ -148,7 +148,7 @@ namespace MagicVilla_VillaAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpDelete("{id:int}", Name = "DeleteVilla")]
-        [Authorize(Roles = "CUSTOM")]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<APIResponse>> DeleteVilla(int id)  /* IActionResult returns NoContent and if we use ActionResult, we have to define a return type */
         {
             try
