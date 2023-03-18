@@ -13,7 +13,7 @@ namespace MagicVilla_VillaAPI.Controllers.v1
     //[Route("/api/villaNumberAPI")]
     [Route("api/v{version:apiVersion}/villaNumberAPI")]
     [ApiController]
-    [ApiVersion("1.0")]
+    [ApiVersion("1.0", Deprecated = true)]
     public class VillaNumberAPIController : ControllerBase
     {
         protected APIResponse _response;
@@ -37,6 +37,12 @@ namespace MagicVilla_VillaAPI.Controllers.v1
             _response.Result = _mapper.Map<List<VillaNumberDTO>>(villaNumberList);
             _response.StatusCode = HttpStatusCode.OK;
             return Ok(_response);
+        }
+
+        [HttpGet("GetString")]
+        public IEnumerable<string> Get()
+        {
+            return new string[] { "Mou", "Pupun" };
         }
 
         [HttpGet("{villaNo:int}", Name = "GetVillaNumber")]
