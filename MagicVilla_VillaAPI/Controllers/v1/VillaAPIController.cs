@@ -99,6 +99,7 @@ namespace MagicVilla_VillaAPI.Controllers.v1
                 {
                     //_logger.Log("Get Villa Id Error for Id = " + id, "error");
                     _response.StatusCode = HttpStatusCode.BadRequest;
+                    _response.IsSuccess = false;
                     return BadRequest(_response);
                 }
                 //var villa = await _db.Villas.FirstOrDefaultAsync(u => u.Id == id);
@@ -108,6 +109,7 @@ namespace MagicVilla_VillaAPI.Controllers.v1
                 if (villa == null)
                 {
                     _response.StatusCode = HttpStatusCode.NotFound;
+                    _response.IsSuccess = false;
                     return NotFound(_response);
                 }
 
