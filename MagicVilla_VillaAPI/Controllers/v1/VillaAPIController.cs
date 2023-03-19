@@ -40,7 +40,7 @@ namespace MagicVilla_VillaAPI.Controllers.v1
             _response = new();
         }
         [HttpGet]
-        [Authorize]
+        //[Authorize(Roles = "admin")]
         [ResponseCache(CacheProfileName = "Default30")]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -82,7 +82,7 @@ namespace MagicVilla_VillaAPI.Controllers.v1
             }
         }
         [HttpGet("{id:int}", Name = "GetVilla")]
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
         [ResponseCache(Duration = 30)]
         //[ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -175,7 +175,7 @@ namespace MagicVilla_VillaAPI.Controllers.v1
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpDelete("{id:int}", Name = "DeleteVilla")]
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
         public async Task<ActionResult<APIResponse>> DeleteVilla(int id)  /* IActionResult returns NoContent and if we use ActionResult, we have to define a return type */
         {
             try

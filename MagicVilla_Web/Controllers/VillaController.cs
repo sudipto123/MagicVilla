@@ -62,7 +62,7 @@ namespace MagicVilla_Web.Controllers
             TempData["error"] = "Error encountered.";
             return View(model);
 		}
-        //[Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> UpdateVilla(int villaId)
         {
             var response = await _villaService.GetAsync<APIResponse>(villaId, HttpContext.Session.GetString(SD.SessionToken));
